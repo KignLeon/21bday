@@ -14,14 +14,13 @@
 
         :root {
             --black:     #080609;
-            --silver:    #b0bac8;
-            --white:     #eee9e0;
-            --ivory:     #f3ede5;
+            --silver:    #b8c2d0;
+            --white:     #f0ebe2;
+            --ivory:     #f6f1e9;
             --gold:      #c4a24a;
-            --gold-glow: rgba(196,162,74,0.13);
-            --glass:     rgba(9, 7, 11, 0.72);
-            --glass-2:   rgba(9, 7, 11, 0.82);
-            --border:    rgba(255,255,255,0.07);
+            --gold-glow: rgba(196,162,74,0.15);
+            --glass:     rgba(8, 6, 10, 0.68);
+            --border:    rgba(255,255,255,0.08);
         }
 
         html { scroll-behavior: smooth; }
@@ -42,17 +41,12 @@
             inset: 0;
             z-index: 0;
             display: grid;
-            /* 4 columns, varied widths for visual interest */
             grid-template-columns: 26% 24% 28% 22%;
-            /* 4 rows covering 100vh */
             grid-template-rows: 28vh 24vh 26vh 22vh;
             overflow: hidden;
         }
 
-        .bc {
-            overflow: hidden;
-            position: relative;
-        }
+        .bc { overflow: hidden; }
 
         .bc img {
             width: 100%;
@@ -60,38 +54,34 @@
             object-fit: cover;
             object-position: var(--pos, center center);
             transform: scale(var(--zoom, 1.08));
-            filter: saturate(var(--sat, 0.55)) brightness(var(--br, 0.38));
+            /* BRIGHTER — was 0.38-0.42, now 0.62-0.72 */
+            filter: saturate(var(--sat, 0.65)) brightness(var(--br, 0.65));
             display: block;
-            will-change: transform;
         }
 
-        /* Dark overlay on top of the collage */
+        /* Lighter overlay — photos show through more */
         .bg-overlay {
             position: fixed;
             inset: 0;
             z-index: 1;
-            /* gradient overlay — slightly lighter at top so hero feels airier */
-            background:
-                linear-gradient(
-                    to bottom,
-                    rgba(8,6,9,0.48) 0%,
-                    rgba(8,6,9,0.62) 40%,
-                    rgba(8,6,9,0.68) 100%
-                );
+            background: linear-gradient(
+                to bottom,
+                rgba(8,6,9,0.35) 0%,
+                rgba(8,6,9,0.48) 50%,
+                rgba(8,6,9,0.55) 100%
+            );
         }
 
-        /* Grain texture */
         .grain {
             position: fixed;
             inset: 0;
             z-index: 9998;
             pointer-events: none;
-            opacity: 0.3;
+            opacity: 0.22;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.32'/%3E%3C/svg%3E");
             background-size: 200px 200px;
         }
 
-        /* All page content sits on top of the collage + overlay */
         .page { position: relative; z-index: 2; }
 
         /* ═══════════════════════════════════════
@@ -99,8 +89,8 @@
         ═══════════════════════════════════════ */
         .glass {
             background: var(--glass);
-            backdrop-filter: blur(28px) saturate(1.2);
-            -webkit-backdrop-filter: blur(28px) saturate(1.2);
+            backdrop-filter: blur(32px) saturate(1.3);
+            -webkit-backdrop-filter: blur(32px) saturate(1.3);
             border: 1px solid var(--border);
         }
 
@@ -121,59 +111,53 @@
             align-items: center;
             gap: 12px;
             font-family: 'Space Mono', monospace;
-            font-size: 9.5px;
-            letter-spacing: 0.38em;
+            font-size: 11px;
+            letter-spacing: 0.36em;
             text-transform: uppercase;
             color: var(--silver);
-            opacity: 0.6;
+            opacity: 0.7;
             margin-bottom: 20px;
         }
 
         .hero__eyebrow::before,
-        .hero__eyebrow::after { content: '★'; color: var(--gold); font-size: 7px; opacity: 0.8; }
+        .hero__eyebrow::after { content: '★'; color: var(--gold); font-size: 8px; opacity: 0.85; }
 
         .hero__name {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(80px, 18vw, 210px);
+            font-size: clamp(90px, 20vw, 230px);
             line-height: 0.82;
             letter-spacing: -0.01em;
-            text-shadow:
-                0 4px 40px rgba(0,0,0,0.9),
-                0 0 120px rgba(0,0,0,0.6);
+            text-shadow: 0 4px 40px rgba(0,0,0,0.9), 0 0 100px rgba(0,0,0,0.5);
         }
 
         .hero__name .stroke {
             color: transparent;
-            -webkit-text-stroke: 1.5px rgba(220,214,200,0.35);
+            -webkit-text-stroke: 2px rgba(230,220,205,0.35);
         }
 
         .hero__rule {
             width: 56px;
             height: 1px;
             background: var(--gold);
-            opacity: 0.45;
-            margin: 22px 0;
+            opacity: 0.5;
+            margin: 24px 0;
         }
 
-        .hero__meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px 44px;
-        }
+        .hero__meta { display: flex; flex-wrap: wrap; gap: 22px 48px; }
 
-        .meta__item { display: flex; flex-direction: column; gap: 3px; }
+        .meta__item { display: flex; flex-direction: column; gap: 4px; }
 
         .meta__label {
             font-family: 'Space Mono', monospace;
-            font-size: 8.5px;
+            font-size: 9px;
             letter-spacing: 0.38em;
             text-transform: uppercase;
             color: var(--silver);
-            opacity: 0.4;
+            opacity: 0.45;
         }
 
         .meta__val {
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 600;
             color: var(--white);
             letter-spacing: 0.06em;
@@ -188,7 +172,7 @@
             overflow: hidden;
             border-top: 1px solid var(--border);
             border-bottom: 1px solid var(--border);
-            padding: 13px 0;
+            padding: 14px 0;
             background: rgba(8,6,9,0.88);
         }
 
@@ -202,14 +186,14 @@
 
         .m-item {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 15px;
-            letter-spacing: 0.13em;
+            font-size: 17px;
+            letter-spacing: 0.14em;
             color: var(--silver);
-            opacity: 0.4;
+            opacity: 0.45;
             padding: 0 30px;
         }
 
-        .m-star { color: var(--gold); opacity: 0.6; padding: 0 14px; font-size: 12px; }
+        .m-star { color: var(--gold); opacity: 0.65; padding: 0 14px; font-size: 13px; }
 
         @keyframes scrollLeft {
             from { transform: translateX(0); }
@@ -217,139 +201,287 @@
         }
 
         /* ═══════════════════════════════════════
-           SETLIST — glass panel
+           DAY LIST — ACCORDION
         ═══════════════════════════════════════ */
-        .setlist-wrap {
+        .daylist-wrap {
             padding: clamp(48px, 8vw, 90px) clamp(20px, 5vw, 60px);
         }
 
-        .setlist-panel {
-            max-width: 940px;
+        .daylist-panel {
+            max-width: 960px;
             margin: 0 auto;
-            padding: clamp(32px, 5vw, 56px) clamp(24px, 4vw, 48px);
+            padding: clamp(32px, 5vw, 56px) clamp(24px, 4vw, 52px);
             border-radius: 6px;
         }
 
         .eyebrow {
             font-family: 'Space Mono', monospace;
-            font-size: 8.5px;
+            font-size: 10px;
             letter-spacing: 0.42em;
             text-transform: uppercase;
             color: var(--silver);
-            opacity: 0.38;
+            opacity: 0.42;
             margin-bottom: 28px;
         }
 
-        .setlist__head {
+        .daylist__head {
             display: flex;
             align-items: baseline;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px 32px;
-            padding-bottom: 16px;
+            padding-bottom: 18px;
             border-bottom: 1px solid var(--border);
             margin-bottom: 6px;
         }
 
-        .setlist__title {
+        .daylist__title {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(52px, 8vw, 86px);
+            font-size: clamp(62px, 10vw, 110px);
             line-height: 1;
             letter-spacing: 0.04em;
             color: var(--white);
         }
 
-        .setlist__sub {
+        .daylist__sub {
             font-family: 'Instrument Serif', serif;
             font-style: italic;
-            font-size: 13px;
+            font-size: 15px;
             color: var(--silver);
-            opacity: 0.42;
+            opacity: 0.45;
             align-self: flex-end;
         }
 
+        /* ── TRACK / DAY ITEM ── */
         .track {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-radius: 3px;
+            margin: 0 -14px;
+            overflow: hidden;
+            transition: background 0.25s ease;
+        }
+
+        .track:hover { background: rgba(255,255,255,0.03); }
+
+        .track--hot { background: var(--gold-glow); border-bottom-color: rgba(196,162,74,0.2); }
+        .track--hot:hover { background: rgba(196,162,74,0.08); }
+
+        /* Clickable header row */
+        .day-header {
             display: grid;
-            grid-template-columns: 36px 1fr auto;
+            grid-template-columns: 42px 1fr auto;
             align-items: center;
             gap: 20px;
-            padding: 18px 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-            border-radius: 3px;
-            margin: 0 -12px;
-            cursor: default;
-            transition: background 0.22s ease;
+            padding: 22px 14px;
+            cursor: pointer;
+            user-select: none;
         }
-
-        .track:hover { background: rgba(255,255,255,0.04); }
-
-        .track--hot {
-            background: var(--gold-glow);
-            border-bottom-color: rgba(196,162,74,0.18);
-        }
-
-        .track--hot:hover { background: rgba(196,162,74,0.09); }
 
         .track__n {
             font-family: 'Space Mono', monospace;
-            font-size: 10px;
+            font-size: 12px;
             color: var(--silver);
-            opacity: 0.28;
+            opacity: 0.3;
             text-align: center;
         }
 
-        .track__star { color: var(--gold); font-size: 13px; text-align: center; }
+        .track__star { color: var(--gold); font-size: 15px; text-align: center; }
 
         .track__title {
-            font-size: 15px;
-            font-weight: 600;
+            font-size: 18px;
+            font-weight: 700;
             color: var(--white);
             letter-spacing: 0.02em;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
+            line-height: 1.2;
         }
 
         .track--hot .track__title { color: var(--ivory); }
 
         .track__detail {
             font-family: 'Space Mono', monospace;
-            font-size: 9px;
+            font-size: 10px;
             letter-spacing: 0.1em;
             color: var(--silver);
-            opacity: 0.36;
+            opacity: 0.4;
             text-transform: uppercase;
-            line-height: 1.65;
+            line-height: 1.7;
+        }
+
+        .track__right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+            flex-shrink: 0;
         }
 
         .track__badge {
             font-family: 'Space Mono', monospace;
-            font-size: 8.5px;
-            letter-spacing: 0.17em;
+            font-size: 9px;
+            letter-spacing: 0.18em;
             text-transform: uppercase;
             padding: 5px 12px;
-            border: 1px solid rgba(255,255,255,0.09);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 2px;
             color: var(--silver);
-            opacity: 0.55;
+            opacity: 0.6;
             white-space: nowrap;
-            flex-shrink: 0;
         }
 
         .track__badge--hot {
-            border-color: rgba(196,162,74,0.5);
+            border-color: rgba(196,162,74,0.55);
             color: var(--gold);
             opacity: 1;
-            box-shadow: 0 0 20px rgba(196,162,74,0.14);
+            box-shadow: 0 0 20px rgba(196,162,74,0.15);
+        }
+
+        .track__chevron {
+            font-family: 'Space Mono', monospace;
+            font-size: 18px;
+            color: var(--silver);
+            opacity: 0.4;
+            transition: transform 0.35s ease, opacity 0.2s ease;
+            line-height: 1;
+        }
+
+        .track.open .track__chevron {
+            transform: rotate(45deg);
+            opacity: 0.7;
+        }
+
+        .track--hot .track__chevron { color: var(--gold); }
+
+        /* ── EXPANDED BODY ── */
+        .day-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .track.open .day-body { max-height: 600px; }
+
+        .day-body-inner {
+            padding: 0 14px 28px 76px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 24px;
+        }
+
+        .day-schedule { display: flex; flex-direction: column; gap: 16px; }
+
+        .time-block {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 16px;
+            align-items: baseline;
+        }
+
+        .time-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.7;
+            padding-top: 2px;
+        }
+
+        .time-rule {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .time-rule::before {
+            content: '—';
+            color: var(--silver);
+            opacity: 0.25;
+            font-size: 11px;
+        }
+
+        .time-text {
+            font-size: 13px;
+            color: var(--white);
+            opacity: 0.75;
+            line-height: 1.65;
+            font-weight: 400;
         }
 
         /* ═══════════════════════════════════════
-           STATS — glass panel
+           PHOTO STRIP — all photos
+        ═══════════════════════════════════════ */
+        .strip-wrap {
+            padding: 0 clamp(20px, 5vw, 60px) clamp(48px, 8vw, 90px);
+        }
+
+        .strip-panel {
+            max-width: 960px;
+            margin: 0 auto;
+            border-radius: 6px;
+            padding: clamp(28px, 4vw, 44px) 0 clamp(28px, 4vw, 44px) clamp(24px, 4vw, 44px);
+        }
+
+        .strip-panel .eyebrow { padding-right: clamp(24px, 4vw, 44px); }
+
+        .strip-scroll {
+            display: flex;
+            gap: 10px;
+            padding-right: clamp(24px, 4vw, 44px);
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(196,162,74,0.3) transparent;
+            cursor: grab;
+            padding-bottom: 8px;
+        }
+
+        .strip-scroll::-webkit-scrollbar { height: 3px; }
+        .strip-scroll::-webkit-scrollbar-track { background: transparent; }
+        .strip-scroll::-webkit-scrollbar-thumb { background: rgba(196,162,74,0.3); border-radius: 2px; }
+        .strip-scroll:active { cursor: grabbing; }
+
+        .strip-item {
+            flex: 0 0 auto;
+            width: 220px;
+            height: 300px;
+            overflow: hidden;
+            scroll-snap-align: start;
+            border-radius: 3px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .strip-item:hover { transform: scale(1.03) translateY(-4px); }
+
+        .strip-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: saturate(0.8) brightness(0.88);
+            transition: filter 0.4s ease, transform 0.5s ease;
+            display: block;
+        }
+
+        .strip-item:hover img {
+            filter: saturate(1.05) brightness(1);
+            transform: scale(1.04);
+        }
+
+        /* Portrait items slightly taller */
+        .strip-item.tall { height: 340px; }
+        .strip-item.wide { width: 290px; }
+
+        /* ═══════════════════════════════════════
+           STATS
         ═══════════════════════════════════════ */
         .stats-wrap {
             padding: 0 clamp(20px, 5vw, 60px) clamp(48px, 8vw, 90px);
         }
 
         .stats-panel {
-            max-width: 940px;
+            max-width: 960px;
             margin: 0 auto;
             border-radius: 6px;
             overflow: hidden;
@@ -362,7 +494,7 @@
         }
 
         .stat {
-            padding: clamp(28px, 4vw, 50px) clamp(16px, 3vw, 36px);
+            padding: clamp(28px, 4vw, 52px) clamp(16px, 3vw, 36px);
             border-right: 1px solid var(--border);
             text-align: center;
             transition: background 0.3s ease;
@@ -373,7 +505,7 @@
 
         .stat__n {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(48px, 7vw, 80px);
+            font-size: clamp(52px, 7vw, 84px);
             line-height: 1;
             color: var(--white);
             letter-spacing: 0.02em;
@@ -381,11 +513,11 @@
 
         .stat__l {
             font-family: 'Space Mono', monospace;
-            font-size: 8.5px;
+            font-size: 9px;
             letter-spacing: 0.32em;
             text-transform: uppercase;
             color: var(--silver);
-            opacity: 0.32;
+            opacity: 0.35;
             margin-top: 10px;
         }
 
@@ -403,21 +535,20 @@
 
         .footer__ghost {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(50px, 13vw, 140px);
+            font-size: clamp(54px, 14vw, 150px);
             line-height: 1;
             color: transparent;
-            -webkit-text-stroke: 1px rgba(255,255,255,0.12);
+            -webkit-text-stroke: 1px rgba(255,255,255,0.14);
             letter-spacing: 0.05em;
             user-select: none;
-            text-shadow: none;
         }
 
         .footer__sig {
             font-family: 'Instrument Serif', serif;
             font-style: italic;
-            font-size: 15px;
+            font-size: 16px;
             color: var(--silver);
-            opacity: 0.38;
+            opacity: 0.42;
             letter-spacing: 0.04em;
         }
 
@@ -426,94 +557,85 @@
         ═══════════════════════════════════════ */
         @media (max-width: 768px) {
             .bg-collage {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2,1fr);
                 grid-template-rows: repeat(8, 12.5vh);
             }
-            .stats-inner { grid-template-columns: repeat(2, 1fr); }
+            .stats-inner { grid-template-columns: repeat(2,1fr); }
             .stat:nth-child(2) { border-right: none; }
             .stat:nth-child(3) { border-right: 1px solid var(--border); border-top: 1px solid var(--border); }
             .stat:nth-child(4) { border-top: 1px solid var(--border); }
+            .day-body-inner { padding-left: 24px; }
+            .time-block { grid-template-columns: 70px 1fr; gap: 10px; }
         }
 
         @media (max-width: 560px) {
-            .track { grid-template-columns: 28px 1fr; gap: 12px; }
-            .track__badge { display: none; }
-            .setlist__head { flex-direction: column; }
+            .day-header { grid-template-columns: 32px 1fr auto; gap: 12px; }
+            .track__right { flex-direction: row; align-items: center; gap: 8px; }
+            .daylist__head { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════
-     PHOTO COLLAGE BACKGROUND (fixed)
-══════════════════════════════════════ -->
+<!-- ══════════════════ BACKGROUND COLLAGE ══════════════════ -->
 <div class="bg-collage" aria-hidden="true">
-    <!-- Row 1 -->
-    <div class="bc" style="--pos:center 18%; --zoom:1.1;  --sat:0.6;  --br:0.38;">
-        <img src="IMG_1904.jpg" alt="">
+    <div class="bc" style="--pos:center 18%; --zoom:1.1;  --sat:0.7;  --br:0.65;">
+        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000167/IMG_1904_phhc65.jpg" alt="">
     </div>
-    <div class="bc" style="--pos:center 30%; --zoom:1.07; --sat:0.52; --br:0.4;">
-        <img src="IMG_1920.jpg" alt="">
+    <div class="bc" style="--pos:center 30%; --zoom:1.07; --sat:0.62; --br:0.68;">
+        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000164/IMG_1920_ovanqi.jpg" alt="">
     </div>
-    <div class="bc" style="--pos:center 40%; --zoom:1.09; --sat:0.55; --br:0.36;">
-        <img src="IMG_1934.jpg" alt="">
+    <div class="bc" style="--pos:center 40%; --zoom:1.09; --sat:0.65; --br:0.62;">
+        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000161/IMG_1934_tc60lr.jpg" alt="">
     </div>
-    <div class="bc" style="--pos:50% 25%;   --zoom:1.06; --sat:0.5;  --br:0.42;">
-        <img src="IMG_3419.jpg" alt="">
+    <div class="bc" style="--pos:50% 25%;   --zoom:1.06; --sat:0.6;  --br:0.7;">
+        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000142/IMG_3419_dnlson.jpg" alt="">
     </div>
-    <!-- Row 2 -->
-    <div class="bc" style="--pos:center 55%; --zoom:1.08; --sat:0.48; --br:0.38;">
-        <img src="IMG_1161.jpg" alt="">
+    <div class="bc" style="--pos:center 55%; --zoom:1.08; --sat:0.58; --br:0.65;">
+        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000169/IMG_1161_b7wby9.jpg" alt="">
     </div>
-    <div class="bc" style="--pos:30% center; --zoom:1.07; --sat:0.55; --br:0.4;">
-        <img src="IMG_3555.jpg" alt="">
+    <div class="bc" style="--pos:30% center; --zoom:1.07; --sat:0.65; --br:0.68;">
+        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000144/IMG_3555_yb86gh.jpg" alt="">
     </div>
-    <div class="bc" style="--pos:center 20%; --zoom:1.1;  --sat:0.52; --br:0.36;">
-        <img src="IMG_2819.jpg" alt="">
+    <div class="bc" style="--pos:center 20%; --zoom:1.1;  --sat:0.62; --br:0.62;">
+        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000156/IMG_2819_y2twvm.jpg" alt="">
     </div>
-    <div class="bc" style="--pos:center 35%; --zoom:1.06; --sat:0.5;  --br:0.42;">
-        <img src="IMG_2956.jpg" alt="">
+    <div class="bc" style="--pos:center 35%; --zoom:1.06; --sat:0.6;  --br:0.7;">
+        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000159/IMG_2956_l7e2fk.jpg" alt="">
     </div>
-    <!-- Row 3 (shuffled) -->
-    <div class="bc" style="--pos:center 60%; --zoom:1.09; --sat:0.53; --br:0.38;">
-        <img src="IMG_2956.jpg" alt="">
+    <div class="bc" style="--pos:center 60%; --zoom:1.09; --sat:0.63; --br:0.65;">
+        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000159/IMG_2956_l7e2fk.jpg" alt="">
     </div>
-    <div class="bc" style="--pos:40% center; --zoom:1.07; --sat:0.5;  --br:0.4;">
-        <img src="IMG_2819.jpg" alt="">
+    <div class="bc" style="--pos:40% center; --zoom:1.07; --sat:0.6;  --br:0.68;">
+        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000156/IMG_2819_y2twvm.jpg" alt="">
     </div>
-    <div class="bc" style="--pos:center 30%; --zoom:1.08; --sat:0.55; --br:0.36;">
-        <img src="IMG_3555.jpg" alt="">
+    <div class="bc" style="--pos:center 30%; --zoom:1.08; --sat:0.65; --br:0.62;">
+        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000144/IMG_3555_yb86gh.jpg" alt="">
     </div>
-    <div class="bc" style="--pos:center 45%; --zoom:1.06; --sat:0.52; --br:0.42;">
-        <img src="IMG_1161.jpg" alt="">
+    <div class="bc" style="--pos:center 45%; --zoom:1.06; --sat:0.62; --br:0.7;">
+        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000169/IMG_1161_b7wby9.jpg" alt="">
     </div>
-    <!-- Row 4 (shuffled) -->
-    <div class="bc" style="--pos:center 20%; --zoom:1.1;  --sat:0.5;  --br:0.38;">
-        <img src="IMG_3419.jpg" alt="">
+    <div class="bc" style="--pos:center 20%; --zoom:1.1;  --sat:0.6;  --br:0.65;">
+        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000142/IMG_3419_dnlson.jpg" alt="">
     </div>
-    <div class="bc" style="--pos:center 40%; --zoom:1.07; --sat:0.55; --br:0.4;">
-        <img src="IMG_1934.jpg" alt="">
+    <div class="bc" style="--pos:center 40%; --zoom:1.07; --sat:0.65; --br:0.68;">
+        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000161/IMG_1934_tc60lr.jpg" alt="">
     </div>
-    <div class="bc" style="--pos:center 15%; --zoom:1.08; --sat:0.52; --br:0.36;">
-        <img src="IMG_1920.jpg" alt="">
+    <div class="bc" style="--pos:center 15%; --zoom:1.08; --sat:0.62; --br:0.62;">
+        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000164/IMG_1920_ovanqi.jpg" alt="">
     </div>
-    <div class="bc" style="--pos:20% center; --zoom:1.06; --sat:0.6;  --br:0.42;">
-        <img src="IMG_1904.jpg" alt="">
+    <div class="bc" style="--pos:20% center; --zoom:1.06; --sat:0.7;  --br:0.7;">
+        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000167/IMG_1904_phhc65.jpg" alt="">
     </div>
 </div>
 
-<!-- Dark overlay -->
 <div class="bg-overlay" aria-hidden="true"></div>
-
-<!-- Grain -->
 <div class="grain" aria-hidden="true"></div>
 
-<!-- ══════════════════════════════════════
-     PAGE CONTENT
-══════════════════════════════════════ -->
+<!-- ══════════════════ PAGE ══════════════════ -->
 <div class="page">
 
-    <!-- HERO — floats directly over collage -->
+    <!-- HERO -->
     <section class="hero" id="top">
         <div class="hero__eyebrow">onnleon presents &nbsp;·&nbsp; solo trip &nbsp;·&nbsp; tulum, mexico</div>
         <div class="hero__name">ONN<span class="stroke">LEON</span></div>
@@ -521,7 +643,7 @@
         <div class="hero__meta">
             <div class="meta__item">
                 <span class="meta__label">Date</span>
-                <span class="meta__val">June 1–5, 2026</span>
+                <span class="meta__val">May 29–June 1, 2026</span>
             </div>
             <div class="meta__item">
                 <span class="meta__label">Location</span>
@@ -533,7 +655,7 @@
             </div>
             <div class="meta__item">
                 <span class="meta__label">Vibe</span>
-                <span class="meta__val">Solo. Unbothered. Free.</span>
+                <span class="meta__val">SOLO. FREE. AUTONOMY</span>
             </div>
         </div>
     </section>
@@ -551,7 +673,6 @@
             <span class="m-item">RENTAL CAR</span><span class="m-star">★</span>
             <span class="m-item">YOUNG. RICH. FREE.</span><span class="m-star">★</span>
             <span class="m-item">CLOUD RAP SUMMER</span><span class="m-star">★</span>
-            <!-- duplicate -->
             <span class="m-item">TULUM</span><span class="m-star">★</span>
             <span class="m-item">SOLO TRAVELER</span><span class="m-star">★</span>
             <span class="m-item">JUNE 2026</span><span class="m-star">★</span>
@@ -565,81 +686,340 @@
         </div>
     </div>
 
-    <!-- SETLIST — glass card -->
-    <section class="setlist-wrap" id="setlist">
-        <div class="setlist-panel glass">
+    <!-- DAY LIST — ACCORDION -->
+    <section class="daylist-wrap" id="daylist">
+        <div class="daylist-panel glass">
             <div class="eyebrow">— the itinerary —</div>
-            <div class="setlist__head">
-                <h1 class="setlist__title">SETLIST</h1>
-                <span class="setlist__sub">tulum, mexico &nbsp;·&nbsp; solo run &nbsp;·&nbsp; summer '26</span>
+            <div class="daylist__head">
+                <h1 class="daylist__title">DAY LIST</h1>
+                <span class="daylist__sub">tulum, mexico &nbsp;·&nbsp; solo run &nbsp;·&nbsp; summer '26</span>
             </div>
 
+            <!-- DAY 01 -->
             <div class="track" id="track-01">
-                <div class="track__n">01</div>
-                <div>
-                    <div class="track__title">TOUCHDOWN IN PARADISE</div>
-                    <div class="track__detail">CUN · late night arrival · private transfer · check in · first breath of tulum air</div>
+                <div class="day-header" onclick="toggleDay(this)">
+                    <div class="track__n">01</div>
+                    <div>
+                        <div class="track__title">TOUCHDOWN IN PARADISE</div>
+                        <div class="track__detail">CUN · late night · private transfer · check in</div>
+                    </div>
+                    <div class="track__right">
+                        <div class="track__badge">MAY 30</div>
+                        <div class="track__chevron">+</div>
+                    </div>
                 </div>
-                <div class="track__badge">MAY 30</div>
+                <div class="day-body">
+                    <div class="day-body-inner">
+                        <div class="day-schedule">
+                            <div class="time-block">
+                                <span class="time-label">EVENING</span>
+                                <div class="time-rule"><span class="time-text">Depart from home — pack light, pack smart</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">NIGHT</span>
+                                <div class="time-rule"><span class="time-text">Land at CUN (expected ~11:30 PM) — clear customs, grab bag</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">MIDNIGHT</span>
+                                <div class="time-rule"><span class="time-text">Private Tripallied transfer — CUN → Tulum (~90 min drive). Window down, first Mexican air hits different.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">~2 AM</span>
+                                <div class="time-rule"><span class="time-text">Check in to The Panoramic Tulum (La Veleta) — explore the villa, drop bags. Too excited to sleep but try anyway.</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <!-- DAY 02 -->
             <div class="track" id="track-02">
-                <div class="track__n">02</div>
-                <div>
-                    <div class="track__title">FIRST SUNRISE</div>
-                    <div class="track__detail">explore la veleta · cenote swim · street tacos · golden hour beach walk</div>
+                <div class="day-header" onclick="toggleDay(this)">
+                    <div class="track__n">02</div>
+                    <div>
+                        <div class="track__title">FIRST SUNRISE</div>
+                        <div class="track__detail">cenote swim · street tacos · golden hour</div>
+                    </div>
+                    <div class="track__right">
+                        <div class="track__badge">MAY 31</div>
+                        <div class="track__chevron">+</div>
+                    </div>
                 </div>
-                <div class="track__badge">MAY 31</div>
+                <div class="day-body">
+                    <div class="day-body-inner">
+                        <div class="day-schedule">
+                            <div class="time-block">
+                                <span class="time-label">MORNING</span>
+                                <div class="time-rule"><span class="time-text">Wake up slow — coffee, explore the villa, walk the La Veleta neighborhood</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">MIDDAY</span>
+                                <div class="time-rule"><span class="time-text">Head to a cenote — Gran Cenote or Dos Ojos (15 min drive). Swim, float, decompress.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">AFTERNOON</span>
+                                <div class="time-rule"><span class="time-text">Street tacos in Tulum Pueblo — explore local spots, maybe grab a rental car or scooter</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">GOLDEN HOUR</span>
+                                <div class="time-rule"><span class="time-text">Tulum beach sunset — the real ones go here at 6 PM. Stay for the full show.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">NIGHT</span>
+                                <div class="time-rule"><span class="time-text">Low key — local restaurant or rooftop. Early night before the big day tomorrow.</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <!-- DAY 03 — BIRTHDAY ★ -->
             <div class="track track--hot" id="track-03">
-                <div class="track__n"><span class="track__star">★</span></div>
-                <div>
-                    <div class="track__title">THE BIRTHDAY &mdash; JUNE 1st</div>
-                    <div class="track__detail">papaya playa project · all night · 21 candles · project x mode fully activated</div>
+                <div class="day-header" onclick="toggleDay(this)">
+                    <div class="track__n"><span class="track__star">★</span></div>
+                    <div>
+                        <div class="track__title">THE BIRTHDAY &mdash; JUNE 1st</div>
+                        <div class="track__detail">papaya playa project · all night · project x mode</div>
+                    </div>
+                    <div class="track__right">
+                        <div class="track__badge track__badge--hot">JUNE 1 &nbsp;·&nbsp; 21</div>
+                        <div class="track__chevron">+</div>
+                    </div>
                 </div>
-                <div class="track__badge track__badge--hot">JUNE 1 &nbsp;·&nbsp; 21</div>
+                <div class="day-body">
+                    <div class="day-body-inner">
+                        <div class="day-schedule">
+                            <div class="time-block">
+                                <span class="time-label">MORNING</span>
+                                <div class="time-rule"><span class="time-text">You are now 21 years old. Let that sink in. Slow morning — pool, breakfast, vibe.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">AFTERNOON</span>
+                                <div class="time-rule"><span class="time-text">Beach session — get the photos in, the golden hour at the Tulum coast on your birthday hits different.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">EVENING</span>
+                                <div class="time-rule"><span class="time-text">Pre-game — get ready, birthday fit, call the people back home. Then eat somewhere real.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">NIGHT</span>
+                                <div class="time-rule"><span class="time-text">Papaya Playa Project — the main event. Live music, DJ, open bar. This is the night.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">ALL NIGHT</span>
+                                <div class="time-rule"><span class="time-text">Project X mode — no curfew, no rules, just vibes. You only turn 21 once.</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <!-- DAY 04 -->
             <div class="track" id="track-04">
-                <div class="track__n">04</div>
-                <div>
-                    <div class="track__title">RECUPERATION TOUR</div>
-                    <div class="track__detail">rooftop pool session · slow morning · work from the villa · local eats · reset</div>
+                <div class="day-header" onclick="toggleDay(this)">
+                    <div class="track__n">04</div>
+                    <div>
+                        <div class="track__title">RECUPERATION TOUR</div>
+                        <div class="track__detail">rooftop pool · work session · reset</div>
+                    </div>
+                    <div class="track__right">
+                        <div class="track__badge">JUNE 2</div>
+                        <div class="track__chevron">+</div>
+                    </div>
                 </div>
-                <div class="track__badge">JUNE 2</div>
+                <div class="day-body">
+                    <div class="day-body-inner">
+                        <div class="day-schedule">
+                            <div class="time-block">
+                                <span class="time-label">MORNING</span>
+                                <div class="time-rule"><span class="time-text">Sleep in. No alarm. This is recovery day — you earned it.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">MIDDAY</span>
+                                <div class="time-rule"><span class="time-text">Rooftop pool at the Panoramic — float, recharge, soak up the sun</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">AFTERNOON</span>
+                                <div class="time-rule"><span class="time-text">Laptop out — work session, emails, whatever needs handling. Productive in paradise.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">EVENING</span>
+                                <div class="time-rule"><span class="time-text">Explore locally — Tulum Pueblo market or a rooftop bar. Keep it chill.</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <!-- DAY 05 -->
             <div class="track" id="track-05">
-                <div class="track__n">05</div>
-                <div>
-                    <div class="track__title">BACK ROADS &amp; OCEAN ROADS</div>
-                    <div class="track__detail">rental car out · cobá ruins or beach drive · jungle roads · golden hour chase</div>
+                <div class="day-header" onclick="toggleDay(this)">
+                    <div class="track__n">05</div>
+                    <div>
+                        <div class="track__title">BACK ROADS &amp; OCEAN ROADS</div>
+                        <div class="track__detail">rental car · cobá ruins · golden hour chase</div>
+                    </div>
+                    <div class="track__right">
+                        <div class="track__badge">JUNE 3</div>
+                        <div class="track__chevron">+</div>
+                    </div>
                 </div>
-                <div class="track__badge">JUNE 3</div>
+                <div class="day-body">
+                    <div class="day-body-inner">
+                        <div class="day-schedule">
+                            <div class="time-block">
+                                <span class="time-label">MORNING</span>
+                                <div class="time-rule"><span class="time-text">Pick up the rental car — this is your day to explore. No plan, just drive.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">MIDDAY</span>
+                                <div class="time-rule"><span class="time-text">Option A: Drive to Cobá ruins (45 min) — climb the pyramid, views are insane.
+Option B: Cruise the Tulum-Playa del Carmen highway — windows down.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">AFTERNOON</span>
+                                <div class="time-rule"><span class="time-text">Beach road cruise — the stretch between Tulum ruins and Papaya Playa. Pull over wherever looks good.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">GOLDEN HOUR</span>
+                                <div class="time-rule"><span class="time-text">Find a spot for the sun going down — whether it's the beach, a rooftop, or the road. Chase it.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">NIGHT</span>
+                                <div class="time-rule"><span class="time-text">Dinner out — something good. You're on a roll now.</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <!-- DAY 06 -->
             <div class="track" id="track-06">
-                <div class="track__n">06</div>
-                <div>
-                    <div class="track__title">LAST NIGHT IN MEXICO</div>
-                    <div class="track__detail">final dinner out · beach walk · one more swim · pack up · make it count</div>
+                <div class="day-header" onclick="toggleDay(this)">
+                    <div class="track__n">06</div>
+                    <div>
+                        <div class="track__title">LAST NIGHT IN MEXICO</div>
+                        <div class="track__detail">final beach · dinner out · make it count</div>
+                    </div>
+                    <div class="track__right">
+                        <div class="track__badge">JUNE 4</div>
+                        <div class="track__chevron">+</div>
+                    </div>
                 </div>
-                <div class="track__badge">JUNE 4</div>
+                <div class="day-body">
+                    <div class="day-body-inner">
+                        <div class="day-schedule">
+                            <div class="time-block">
+                                <span class="time-label">MORNING</span>
+                                <div class="time-rule"><span class="time-text">Last morning at the villa — slow coffee, last rooftop moment, soak it in</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">AFTERNOON</span>
+                                <div class="time-rule"><span class="time-text">Final cenote or beach swim — one last time in the water. Get the photos.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">EVENING</span>
+                                <div class="time-rule"><span class="time-text">Best dinner of the trip — go somewhere you've been eyeing all week. Treat yourself.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">NIGHT</span>
+                                <div class="time-rule"><span class="time-text">Beach walk — no phone, just the ocean. Pack up when you get back. 4:30 AM comes fast.</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <!-- DAY 07 -->
             <div class="track" id="track-07">
-                <div class="track__n">07</div>
-                <div>
-                    <div class="track__title">THE RETURN</div>
-                    <div class="track__detail">4:30 AM out the door · CUN departure · back to reality · different man</div>
+                <div class="day-header" onclick="toggleDay(this)">
+                    <div class="track__n">07</div>
+                    <div>
+                        <div class="track__title">THE RETURN</div>
+                        <div class="track__detail">4:30 AM out · CUN departure · different man</div>
+                    </div>
+                    <div class="track__right">
+                        <div class="track__badge">JUNE 5</div>
+                        <div class="track__chevron">+</div>
+                    </div>
                 </div>
-                <div class="track__badge">JUNE 5</div>
+                <div class="day-body">
+                    <div class="day-body-inner">
+                        <div class="day-schedule">
+                            <div class="time-block">
+                                <span class="time-label">4:30 AM</span>
+                                <div class="time-rule"><span class="time-text">Out the door. Bags packed, one last look at the villa. Step into the dark.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">DRIVE</span>
+                                <div class="time-rule"><span class="time-text">CUN Airport (~90 min) — watch the jungle pass by in the dark. This is the end of chapter one.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">AIRPORT</span>
+                                <div class="time-rule"><span class="time-text">CUN check in — clear security, find your gate. Breakfast if anything's open. Reflect.</span></div>
+                            </div>
+                            <div class="time-block">
+                                <span class="time-label">FLIGHT</span>
+                                <div class="time-rule"><span class="time-text">Back to reality. But you're not the same person who landed here. Different man.</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /.daylist-panel -->
+    </section>
+
+    <!-- PHOTO STRIP — all photos -->
+    <section class="strip-wrap" id="gallery">
+        <div class="strip-panel glass">
+            <div class="eyebrow">— scroll to explore → —</div>
+            <div class="strip-scroll" id="stripScroll">
+                <!-- Top picks — portrait shots first -->
+                <div class="strip-item tall"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000167/IMG_1904_phhc65.jpg" alt="silhouette beach"></div>
+                <div class="strip-item tall"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000164/IMG_1920_ovanqi.jpg" alt="sunset portrait"></div>
+                <div class="strip-item tall"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000161/IMG_1934_tc60lr.jpg" alt="sunset profile"></div>
+                <div class="strip-item"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000142/IMG_3419_dnlson.jpg" alt="market portrait"></div>
+                <div class="strip-item wide"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000169/IMG_1161_b7wby9.jpg" alt="cash vision"></div>
+                <div class="strip-item wide"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000144/IMG_3555_yb86gh.jpg" alt="fleet"></div>
+                <div class="strip-item tall"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000156/IMG_2819_y2twvm.jpg" alt="Chanel selfie"></div>
+                <div class="strip-item wide"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000159/IMG_2956_l7e2fk.jpg" alt="S63 AMG"></div>
+                <!-- More photos from the library -->
+                <div class="strip-item tall"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000169/IMG_1127_tjc1zz.jpg" alt=""></div>
+                <div class="strip-item tall"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000170/IMG_1131_hujhkk.jpg" alt=""></div>
+                <div class="strip-item tall"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000168/IMG_1136_numy5q.png" alt=""></div>
+                <div class="strip-item tall"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000164/IMG_1164_rl2ykt.jpg" alt=""></div>
+                <div class="strip-item"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000161/IMG_1495_dvorkz.jpg" alt=""></div>
+                <div class="strip-item"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000160/IMG_1797_ne2crh.jpg" alt=""></div>
+                <div class="strip-item tall"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000161/IMG_1911_kpn1oq.jpg" alt=""></div>
+                <div class="strip-item tall"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000158/IMG_1935_jqv5hu.jpg" alt=""></div>
+                <div class="strip-item wide"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000156/IMG_2151_msij46.jpg" alt=""></div>
+                <div class="strip-item wide"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000157/IMG_2310_nqoyre.jpg" alt=""></div>
+                <div class="strip-item wide"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000158/IMG_2315_aoqbzy.jpg" alt=""></div>
+                <div class="strip-item"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000152/IMG_2686_z84yvm.jpg" alt=""></div>
+                <div class="strip-item wide"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000150/IMG_3180_s1wtga.jpg" alt=""></div>
+                <div class="strip-item"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000149/IMG_3183_h9nzi7.jpg" alt=""></div>
+                <div class="strip-item"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000150/IMG_3187_vueb0s.jpg" alt=""></div>
+                <div class="strip-item wide"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000151/IMG_3260_rx0xqz.jpg" alt=""></div>
+                <div class="strip-item tall"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000147/IMG_3361_z4y2ah.jpg" alt=""></div>
+                <div class="strip-item tall"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000143/IMG_3446_ml6i5y.jpg" alt=""></div>
+                <div class="strip-item tall"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000150/IMG_3453_u7afyi.jpg" alt=""></div>
+                <div class="strip-item tall"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000148/IMG_3484_tda2vp.jpg" alt=""></div>
+                <div class="strip-item wide"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000147/IMG_3525_tba9of.jpg" alt=""></div>
+                <div class="strip-item"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000138/IMG_3561_gjxkse.jpg" alt=""></div>
+                <div class="strip-item"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000138/IMG_3567_e56l5d.jpg" alt=""></div>
+                <div class="strip-item"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000138/IMG_3568_qsn0ha.png" alt=""></div>
+                <div class="strip-item"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000138/IMG_3569_ffcqbl.png" alt=""></div>
+                <div class="strip-item"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000138/IMG_3570_fcew8n.png" alt=""></div>
+                <!-- Generated assets -->
+                <div class="strip-item wide"><img src="hero.png" alt="tulum hero"></div>
+                <div class="strip-item wide"><img src="cenote.png" alt="cenote"></div>
+                <div class="strip-item wide"><img src="pool.png" alt="pool night"></div>
             </div>
         </div>
     </section>
 
-    <!-- STATS — glass card -->
+    <!-- STATS -->
     <section class="stats-wrap" id="stats">
         <div class="stats-panel glass">
             <div class="stats-inner">
@@ -663,7 +1043,7 @@
         </div>
     </section>
 
-    <!-- FOOTER — transparent over collage -->
+    <!-- FOOTER -->
     <footer>
         <div class="footer__ghost">HAPPY 21ST</div>
         <div class="footer__sig">june 1st, 2026 &nbsp;·&nbsp; tulum, mexico &nbsp;·&nbsp; @onnleon</div>
@@ -672,16 +1052,26 @@
 </div><!-- /.page -->
 
 <script>
-    // Subtle parallax: shift collage photos on scroll
+    // ── Day accordion
+    function toggleDay(header) {
+        const track = header.parentElement;
+        const isOpen = track.classList.contains('open');
+
+        // Close all open tracks first
+        document.querySelectorAll('.track.open').forEach(t => t.classList.remove('open'));
+
+        // Open clicked one if it was closed
+        if (!isOpen) track.classList.add('open');
+    }
+
+    // ── Background subtle parallax on scroll
     const bgs = document.querySelectorAll('.bc img');
     let ticking = false;
-
     window.addEventListener('scroll', () => {
         if (!ticking) {
             requestAnimationFrame(() => {
-                const s = window.scrollY * 0.04; // very subtle
+                const s = window.scrollY * 0.035;
                 bgs.forEach((img, i) => {
-                    // alternating up/down drift per row for depth
                     const dir = (Math.floor(i / 4) % 2 === 0) ? 1 : -1;
                     img.style.transform = `scale(var(--zoom, 1.08)) translateY(${s * dir}%)`;
                 });
@@ -691,7 +1081,24 @@
         }
     });
 
-    // Fade-in tracks on scroll
+    // ── Drag-scroll photo strip
+    const strip = document.getElementById('stripScroll');
+    let isDown = false, startX, scrollLeft;
+    strip.addEventListener('mousedown', e => {
+        isDown = true;
+        startX = e.pageX - strip.offsetLeft;
+        scrollLeft = strip.scrollLeft;
+    });
+    strip.addEventListener('mouseleave', () => { isDown = false; });
+    strip.addEventListener('mouseup', () => { isDown = false; });
+    strip.addEventListener('mousemove', e => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - strip.offsetLeft;
+        strip.scrollLeft = scrollLeft - (x - startX) * 1.6;
+    });
+
+    // ── Staggered fade-in on scroll
     const observer = new IntersectionObserver(entries => {
         entries.forEach(el => {
             if (el.isIntersecting) {
@@ -700,12 +1107,12 @@
                 observer.unobserve(el.target);
             }
         });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.1 });
 
     document.querySelectorAll('.track, .stat').forEach((el, i) => {
         el.style.opacity = '0';
-        el.style.transform = 'translateY(14px)';
-        el.style.transition = `opacity 0.5s ease ${i * 0.06}s, transform 0.5s ease ${i * 0.06}s`;
+        el.style.transform = 'translateY(16px)';
+        el.style.transition = `opacity 0.5s ease ${i * 0.07}s, transform 0.5s ease ${i * 0.07}s`;
         observer.observe(el);
     });
 </script>
