@@ -13,86 +13,108 @@
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --black:      #070608;
-            --dark:       #0e0c10;
-            --silver:     #a8b2c4;
-            --silver-dim: rgba(168,178,196,0.35);
-            --white:      #ede8df;
-            --ivory:      #f2ede5;
-            --gold:       #c4a24a;
-            --gold-glow:  rgba(196,162,74,0.12);
-            --border:     rgba(255,255,255,0.06);
+            --black:     #080609;
+            --silver:    #b0bac8;
+            --white:     #eee9e0;
+            --ivory:     #f3ede5;
+            --gold:      #c4a24a;
+            --gold-glow: rgba(196,162,74,0.13);
+            --glass:     rgba(9, 7, 11, 0.72);
+            --glass-2:   rgba(9, 7, 11, 0.82);
+            --border:    rgba(255,255,255,0.07);
         }
 
         html { scroll-behavior: smooth; }
 
         body {
-            background: var(--black);
             color: var(--white);
             font-family: 'Space Grotesk', sans-serif;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            background: var(--black);
         }
 
-        /* ─── GRAIN ─── */
+        /* ═══════════════════════════════════════
+           FIXED PHOTO COLLAGE BACKGROUND
+        ═══════════════════════════════════════ */
+        .bg-collage {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            display: grid;
+            /* 4 columns, varied widths for visual interest */
+            grid-template-columns: 26% 24% 28% 22%;
+            /* 4 rows covering 100vh */
+            grid-template-rows: 28vh 24vh 26vh 22vh;
+            overflow: hidden;
+        }
+
+        .bc {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bc img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: var(--pos, center center);
+            transform: scale(var(--zoom, 1.08));
+            filter: saturate(var(--sat, 0.55)) brightness(var(--br, 0.38));
+            display: block;
+            will-change: transform;
+        }
+
+        /* Dark overlay on top of the collage */
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            /* gradient overlay — slightly lighter at top so hero feels airier */
+            background:
+                linear-gradient(
+                    to bottom,
+                    rgba(8,6,9,0.48) 0%,
+                    rgba(8,6,9,0.62) 40%,
+                    rgba(8,6,9,0.68) 100%
+                );
+        }
+
+        /* Grain texture */
         .grain {
             position: fixed;
             inset: 0;
+            z-index: 9998;
             pointer-events: none;
-            z-index: 9999;
-            opacity: 0.28;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+            opacity: 0.3;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.32'/%3E%3C/svg%3E");
             background-size: 200px 200px;
         }
 
-        /* ═══════════════════════════════
+        /* All page content sits on top of the collage + overlay */
+        .page { position: relative; z-index: 2; }
+
+        /* ═══════════════════════════════════════
+           GLASS UTILITY
+        ═══════════════════════════════════════ */
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(28px) saturate(1.2);
+            -webkit-backdrop-filter: blur(28px) saturate(1.2);
+            border: 1px solid var(--border);
+        }
+
+        /* ═══════════════════════════════════════
            HERO
-        ═══════════════════════════════ */
+        ═══════════════════════════════════════ */
         .hero {
-            position: relative;
             height: 100vh;
             min-height: 680px;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             padding: clamp(28px, 5vw, 64px);
-            overflow: hidden;
         }
-
-        .hero__bg {
-            position: absolute;
-            inset: 0;
-            background: url('IMG_1904.jpg') center 18% / cover no-repeat;
-            filter: saturate(0.45) brightness(0.5);
-            will-change: transform;
-        }
-
-        .hero__bg::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                to top,
-                var(--black) 0%,
-                rgba(7,6,8,0.65) 38%,
-                rgba(7,6,8,0.15) 72%,
-                transparent 100%
-            );
-        }
-
-        .hero__bg::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                95deg,
-                rgba(7,6,8,0.55) 0%,
-                transparent 55%
-            );
-        }
-
-        .hero__content { position: relative; z-index: 2; }
 
         .hero__eyebrow {
             display: inline-flex;
@@ -103,31 +125,33 @@
             letter-spacing: 0.38em;
             text-transform: uppercase;
             color: var(--silver);
-            opacity: 0.55;
+            opacity: 0.6;
             margin-bottom: 20px;
         }
 
         .hero__eyebrow::before,
-        .hero__eyebrow::after { content: '★'; color: var(--gold); font-size: 7px; opacity: 0.75; }
+        .hero__eyebrow::after { content: '★'; color: var(--gold); font-size: 7px; opacity: 0.8; }
 
         .hero__name {
             font-family: 'Bebas Neue', sans-serif;
             font-size: clamp(80px, 18vw, 210px);
             line-height: 0.82;
             letter-spacing: -0.01em;
-            display: block;
+            text-shadow:
+                0 4px 40px rgba(0,0,0,0.9),
+                0 0 120px rgba(0,0,0,0.6);
         }
 
         .hero__name .stroke {
             color: transparent;
-            -webkit-text-stroke: 1.5px rgba(220, 214, 200, 0.25);
+            -webkit-text-stroke: 1.5px rgba(220,214,200,0.35);
         }
 
         .hero__rule {
             width: 56px;
             height: 1px;
             background: var(--gold);
-            opacity: 0.4;
+            opacity: 0.45;
             margin: 22px 0;
         }
 
@@ -145,7 +169,7 @@
             letter-spacing: 0.38em;
             text-transform: uppercase;
             color: var(--silver);
-            opacity: 0.38;
+            opacity: 0.4;
         }
 
         .meta__val {
@@ -154,22 +178,23 @@
             color: var(--white);
             letter-spacing: 0.06em;
             text-transform: uppercase;
+            text-shadow: 0 2px 16px rgba(0,0,0,0.8);
         }
 
-        /* ═══════════════════════════════
+        /* ═══════════════════════════════════════
            MARQUEE
-        ═══════════════════════════════ */
+        ═══════════════════════════════════════ */
         .marquee-wrap {
             overflow: hidden;
             border-top: 1px solid var(--border);
             border-bottom: 1px solid var(--border);
             padding: 13px 0;
-            background: rgba(255,255,255,0.013);
+            background: rgba(8,6,9,0.88);
         }
 
         .marquee-track {
             display: flex;
-            animation: scrollLeft 28s linear infinite;
+            animation: scrollLeft 30s linear infinite;
             white-space: nowrap;
         }
 
@@ -180,24 +205,29 @@
             font-size: 15px;
             letter-spacing: 0.13em;
             color: var(--silver);
-            opacity: 0.38;
+            opacity: 0.4;
             padding: 0 30px;
         }
 
-        .m-star { color: var(--gold); opacity: 0.55; padding: 0 14px; }
+        .m-star { color: var(--gold); opacity: 0.6; padding: 0 14px; font-size: 12px; }
 
         @keyframes scrollLeft {
             from { transform: translateX(0); }
             to   { transform: translateX(-50%); }
         }
 
-        /* ═══════════════════════════════
-           SETLIST
-        ═══════════════════════════════ */
-        .setlist {
-            padding: clamp(64px, 10vw, 110px) clamp(24px, 7vw, 80px);
-            max-width: 1000px;
+        /* ═══════════════════════════════════════
+           SETLIST — glass panel
+        ═══════════════════════════════════════ */
+        .setlist-wrap {
+            padding: clamp(48px, 8vw, 90px) clamp(20px, 5vw, 60px);
+        }
+
+        .setlist-panel {
+            max-width: 940px;
             margin: 0 auto;
+            padding: clamp(32px, 5vw, 56px) clamp(24px, 4vw, 48px);
+            border-radius: 6px;
         }
 
         .eyebrow {
@@ -216,14 +246,14 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px 32px;
-            padding-bottom: 18px;
+            padding-bottom: 16px;
             border-bottom: 1px solid var(--border);
             margin-bottom: 6px;
         }
 
         .setlist__title {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(52px, 8vw, 88px);
+            font-size: clamp(52px, 8vw, 86px);
             line-height: 1;
             letter-spacing: 0.04em;
             color: var(--white);
@@ -232,26 +262,26 @@
         .setlist__sub {
             font-family: 'Instrument Serif', serif;
             font-style: italic;
-            font-size: 14px;
+            font-size: 13px;
             color: var(--silver);
-            opacity: 0.45;
+            opacity: 0.42;
             align-self: flex-end;
         }
 
         .track {
             display: grid;
-            grid-template-columns: 38px 1fr auto;
+            grid-template-columns: 36px 1fr auto;
             align-items: center;
             gap: 20px;
-            padding: 19px 14px;
-            border-bottom: 1px solid rgba(255,255,255,0.035);
+            padding: 18px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
             border-radius: 3px;
-            margin: 0 -14px;
+            margin: 0 -12px;
             cursor: default;
             transition: background 0.22s ease;
         }
 
-        .track:hover { background: rgba(255,255,255,0.035); }
+        .track:hover { background: rgba(255,255,255,0.04); }
 
         .track--hot {
             background: var(--gold-glow);
@@ -262,23 +292,19 @@
 
         .track__n {
             font-family: 'Space Mono', monospace;
-            font-size: 11px;
+            font-size: 10px;
             color: var(--silver);
             opacity: 0.28;
             text-align: center;
         }
 
-        .track__star {
-            color: var(--gold);
-            font-size: 13px;
-            text-align: center;
-        }
+        .track__star { color: var(--gold); font-size: 13px; text-align: center; }
 
         .track__title {
             font-size: 15px;
             font-weight: 600;
             color: var(--white);
-            letter-spacing: 0.025em;
+            letter-spacing: 0.02em;
             margin-bottom: 5px;
         }
 
@@ -289,9 +315,9 @@
             font-size: 9px;
             letter-spacing: 0.1em;
             color: var(--silver);
-            opacity: 0.38;
+            opacity: 0.36;
             text-transform: uppercase;
-            line-height: 1.6;
+            line-height: 1.65;
         }
 
         .track__badge {
@@ -312,179 +338,38 @@
             border-color: rgba(196,162,74,0.5);
             color: var(--gold);
             opacity: 1;
-            box-shadow: 0 0 16px rgba(196,162,74,0.12);
+            box-shadow: 0 0 20px rgba(196,162,74,0.14);
         }
 
-        /* ═══════════════════════════════
-           COLLAGE — SCATTER
-        ═══════════════════════════════ */
-        .collage-section {
-            padding: clamp(60px, 8vw, 90px) 0;
+        /* ═══════════════════════════════════════
+           STATS — glass panel
+        ═══════════════════════════════════════ */
+        .stats-wrap {
+            padding: 0 clamp(20px, 5vw, 60px) clamp(48px, 8vw, 90px);
+        }
+
+        .stats-panel {
+            max-width: 940px;
+            margin: 0 auto;
+            border-radius: 6px;
             overflow: hidden;
         }
 
-        .collage-head {
-            padding: 0 clamp(24px, 7vw, 80px);
-            margin-bottom: 52px;
-        }
-
-        .ghost-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(68px, 13vw, 150px);
-            line-height: 0.92;
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(200,194,180,0.1);
-            letter-spacing: 0.03em;
-            user-select: none;
-        }
-
-        /* Scattered photos */
-        .scatter {
-            position: relative;
-            width: 100%;
-            height: 700px;
-            overflow: visible;
-        }
-
-        .sp {
-            position: absolute;
-            overflow: hidden;
-            box-shadow:
-                0 24px 64px rgba(0,0,0,0.75),
-                0 6px 18px rgba(0,0,0,0.55),
-                inset 0 0 0 1px rgba(255,255,255,0.04);
-            transition:
-                transform 0.42s cubic-bezier(0.34,1.56,0.64,1),
-                box-shadow 0.42s ease;
-            cursor: pointer;
-            transform: rotate(var(--rot, 0deg));
-        }
-
-        .sp:hover {
-            transform: rotate(var(--rot, 0deg)) scale(1.06) translateY(-10px) !important;
-            box-shadow:
-                0 40px 90px rgba(0,0,0,0.9),
-                0 12px 28px rgba(0,0,0,0.6);
-            z-index: 20 !important;
-        }
-
-        .sp img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            filter: saturate(0.78) brightness(0.88);
-            transition: filter 0.4s ease, transform 0.5s ease;
-        }
-
-        .sp:hover img {
-            filter: saturate(1.05) brightness(1);
-            transform: scale(1.03);
-        }
-
-        .sp::after {
-            content: attr(data-label);
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            padding: 28px 10px 9px;
-            background: linear-gradient(to top, rgba(0,0,0,0.75), transparent);
-            font-family: 'Space Mono', monospace;
-            font-size: 8px;
-            letter-spacing: 0.28em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.55);
-            pointer-events: none;
-        }
-
-        /* Individual photo positions & sizes */
-        .sp1  { width: 230px; height: 310px; left:  2%; top:  55px; --rot: -3.2deg;  z-index: 4; }
-        .sp2  { width: 195px; height: 275px; left: 18%; top:  20px; --rot:  2.1deg;  z-index: 3; }
-        .sp3  { width: 270px; height: 200px; left: 31%; top:  90px; --rot: -1.4deg;  z-index: 5; }
-        .sp4  { width: 210px; height: 300px; left: 52%; top:  10px; --rot:  2.8deg;  z-index: 3; }
-        .sp5  { width: 250px; height: 195px; left: 66%; top: 110px; --rot: -2.2deg;  z-index: 4; }
-        .sp6  { width: 220px; height: 295px; left: 81%; top:  45px; --rot:  1.6deg;  z-index: 3; }
-        .sp7  { width: 195px; height: 250px; left:  9%; top: 350px; --rot:  2.4deg;  z-index: 2; }
-        .sp8  { width: 265px; height: 185px; left: 34%; top: 345px; --rot: -0.9deg;  z-index: 2; }
-
-        /* ═══════════════════════════════
-           HORIZONTAL FILM STRIP
-        ═══════════════════════════════ */
-        .strip-section {
-            padding: 64px 0;
-            border-top: 1px solid var(--border);
-        }
-
-        .strip-head {
-            padding: 0 clamp(24px, 7vw, 80px);
-            margin-bottom: 32px;
-        }
-
-        .strip-scroll {
-            display: flex;
-            gap: 14px;
-            padding: 0 clamp(24px, 7vw, 80px) 20px;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            cursor: grab;
-        }
-
-        .strip-scroll::-webkit-scrollbar { display: none; }
-        .strip-scroll:active { cursor: grabbing; }
-
-        .strip-item {
-            flex: 0 0 auto;
-            width: 250px;
-            height: 340px;
-            overflow: hidden;
-            scroll-snap-align: start;
-            border-radius: 2px;
-            position: relative;
-            box-shadow: 0 12px 36px rgba(0,0,0,0.6);
-        }
-
-        .strip-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: saturate(0.72) brightness(0.82);
-            transition: filter 0.4s ease, transform 0.5s ease;
-            display: block;
-        }
-
-        .strip-item:hover img {
-            filter: saturate(1.05) brightness(1);
-            transform: scale(1.04);
-        }
-
-        /* ═══════════════════════════════
-           STATS
-        ═══════════════════════════════ */
-        .stats-section {
-            padding: clamp(64px, 9vw, 110px) clamp(24px, 7vw, 80px);
-            border-top: 1px solid var(--border);
-        }
-
-        .stats-grid {
+        .stats-inner {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            border: 1px solid var(--border);
-            border-radius: 2px;
-            overflow: hidden;
-            margin-top: 44px;
+            border-top: 1px solid var(--border);
         }
 
         .stat {
-            padding: clamp(28px, 5vw, 52px) clamp(16px, 3vw, 40px);
+            padding: clamp(28px, 4vw, 50px) clamp(16px, 3vw, 36px);
             border-right: 1px solid var(--border);
             text-align: center;
-            background: rgba(255,255,255,0.008);
             transition: background 0.3s ease;
         }
 
         .stat:last-child { border-right: none; }
-        .stat:hover { background: rgba(255,255,255,0.025); }
+        .stat:hover { background: rgba(255,255,255,0.03); }
 
         .stat__n {
             font-family: 'Bebas Neue', sans-serif;
@@ -500,16 +385,15 @@
             letter-spacing: 0.32em;
             text-transform: uppercase;
             color: var(--silver);
-            opacity: 0.35;
+            opacity: 0.32;
             margin-top: 10px;
         }
 
-        /* ═══════════════════════════════
+        /* ═══════════════════════════════════════
            FOOTER
-        ═══════════════════════════════ */
+        ═══════════════════════════════════════ */
         footer {
-            padding: clamp(60px, 8vw, 100px) clamp(24px, 7vw, 80px) clamp(44px, 6vw, 80px);
-            border-top: 1px solid var(--border);
+            padding: clamp(60px, 8vw, 100px) clamp(24px, 6vw, 72px) clamp(44px, 6vw, 80px);
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -522,9 +406,10 @@
             font-size: clamp(50px, 13vw, 140px);
             line-height: 1;
             color: transparent;
-            -webkit-text-stroke: 1px rgba(200,194,180,0.09);
+            -webkit-text-stroke: 1px rgba(255,255,255,0.12);
             letter-spacing: 0.05em;
             user-select: none;
+            text-shadow: none;
         }
 
         .footer__sig {
@@ -532,54 +417,104 @@
             font-style: italic;
             font-size: 15px;
             color: var(--silver);
-            opacity: 0.35;
+            opacity: 0.38;
             letter-spacing: 0.04em;
         }
 
-        /* ═══════════════════════════════
+        /* ═══════════════════════════════════════
            RESPONSIVE
-        ═══════════════════════════════ */
-        @media (max-width: 900px) {
-            .scatter { height: auto; position: static; }
-            .sp {
-                position: static !important;
-                width: 100% !important;
-                height: 260px !important;
-                transform: none !important;
-                --rot: 0deg;
-                margin-bottom: 12px;
+        ═══════════════════════════════════════ */
+        @media (max-width: 768px) {
+            .bg-collage {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(8, 12.5vh);
             }
-            .scatter {
-                display: flex;
-                flex-direction: column;
-                padding: 0 20px;
-            }
-            .stats-grid { grid-template-columns: repeat(2,1fr); }
+            .stats-inner { grid-template-columns: repeat(2, 1fr); }
+            .stat:nth-child(2) { border-right: none; }
+            .stat:nth-child(3) { border-right: 1px solid var(--border); border-top: 1px solid var(--border); }
+            .stat:nth-child(4) { border-top: 1px solid var(--border); }
         }
 
         @media (max-width: 560px) {
-            .track {
-                grid-template-columns: 28px 1fr;
-                gap: 12px;
-            }
+            .track { grid-template-columns: 28px 1fr; gap: 12px; }
             .track__badge { display: none; }
             .setlist__head { flex-direction: column; }
-            .stats-grid { grid-template-columns: repeat(2,1fr); }
-            .hero__meta { gap: 16px 28px; }
         }
     </style>
 </head>
 <body>
 
-<!-- Grain overlay -->
+<!-- ══════════════════════════════════════
+     PHOTO COLLAGE BACKGROUND (fixed)
+══════════════════════════════════════ -->
+<div class="bg-collage" aria-hidden="true">
+    <!-- Row 1 -->
+    <div class="bc" style="--pos:center 18%; --zoom:1.1;  --sat:0.6;  --br:0.38;">
+        <img src="IMG_1904.jpg" alt="">
+    </div>
+    <div class="bc" style="--pos:center 30%; --zoom:1.07; --sat:0.52; --br:0.4;">
+        <img src="IMG_1920.jpg" alt="">
+    </div>
+    <div class="bc" style="--pos:center 40%; --zoom:1.09; --sat:0.55; --br:0.36;">
+        <img src="IMG_1934.jpg" alt="">
+    </div>
+    <div class="bc" style="--pos:50% 25%;   --zoom:1.06; --sat:0.5;  --br:0.42;">
+        <img src="IMG_3419.jpg" alt="">
+    </div>
+    <!-- Row 2 -->
+    <div class="bc" style="--pos:center 55%; --zoom:1.08; --sat:0.48; --br:0.38;">
+        <img src="IMG_1161.jpg" alt="">
+    </div>
+    <div class="bc" style="--pos:30% center; --zoom:1.07; --sat:0.55; --br:0.4;">
+        <img src="IMG_3555.jpg" alt="">
+    </div>
+    <div class="bc" style="--pos:center 20%; --zoom:1.1;  --sat:0.52; --br:0.36;">
+        <img src="IMG_2819.jpg" alt="">
+    </div>
+    <div class="bc" style="--pos:center 35%; --zoom:1.06; --sat:0.5;  --br:0.42;">
+        <img src="IMG_2956.jpg" alt="">
+    </div>
+    <!-- Row 3 (shuffled) -->
+    <div class="bc" style="--pos:center 60%; --zoom:1.09; --sat:0.53; --br:0.38;">
+        <img src="IMG_2956.jpg" alt="">
+    </div>
+    <div class="bc" style="--pos:40% center; --zoom:1.07; --sat:0.5;  --br:0.4;">
+        <img src="IMG_2819.jpg" alt="">
+    </div>
+    <div class="bc" style="--pos:center 30%; --zoom:1.08; --sat:0.55; --br:0.36;">
+        <img src="IMG_3555.jpg" alt="">
+    </div>
+    <div class="bc" style="--pos:center 45%; --zoom:1.06; --sat:0.52; --br:0.42;">
+        <img src="IMG_1161.jpg" alt="">
+    </div>
+    <!-- Row 4 (shuffled) -->
+    <div class="bc" style="--pos:center 20%; --zoom:1.1;  --sat:0.5;  --br:0.38;">
+        <img src="IMG_3419.jpg" alt="">
+    </div>
+    <div class="bc" style="--pos:center 40%; --zoom:1.07; --sat:0.55; --br:0.4;">
+        <img src="IMG_1934.jpg" alt="">
+    </div>
+    <div class="bc" style="--pos:center 15%; --zoom:1.08; --sat:0.52; --br:0.36;">
+        <img src="IMG_1920.jpg" alt="">
+    </div>
+    <div class="bc" style="--pos:20% center; --zoom:1.06; --sat:0.6;  --br:0.42;">
+        <img src="IMG_1904.jpg" alt="">
+    </div>
+</div>
+
+<!-- Dark overlay -->
+<div class="bg-overlay" aria-hidden="true"></div>
+
+<!-- Grain -->
 <div class="grain" aria-hidden="true"></div>
 
-<!-- ══════════════════════════════
-     HERO
-══════════════════════════════ -->
-<section class="hero" id="top">
-    <div class="hero__bg" id="heroBg"></div>
-    <div class="hero__content">
+<!-- ══════════════════════════════════════
+     PAGE CONTENT
+══════════════════════════════════════ -->
+<div class="page">
+
+    <!-- HERO — floats directly over collage -->
+    <section class="hero" id="top">
         <div class="hero__eyebrow">onnleon presents &nbsp;·&nbsp; solo trip &nbsp;·&nbsp; tulum, mexico</div>
         <div class="hero__name">ONN<span class="stroke">LEON</span></div>
         <div class="hero__rule"></div>
@@ -601,252 +536,176 @@
                 <span class="meta__val">Solo. Unbothered. Free.</span>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- ══════════════════════════════
-     MARQUEE
-══════════════════════════════ -->
-<div class="marquee-wrap" aria-hidden="true">
-    <div class="marquee-track">
-        <span class="m-item">TULUM</span><span class="m-star">★</span>
-        <span class="m-item">SOLO TRAVELER</span><span class="m-star">★</span>
-        <span class="m-item">JUNE 2026</span><span class="m-star">★</span>
-        <span class="m-item">21ST BIRTHDAY</span><span class="m-star">★</span>
-        <span class="m-item">PAPAYA PLAYA PROJECT</span><span class="m-star">★</span>
-        <span class="m-item">CENOTE RUN</span><span class="m-star">★</span>
-        <span class="m-item">PANORAMIC TULUM</span><span class="m-star">★</span>
-        <span class="m-item">RENTAL CAR</span><span class="m-star">★</span>
-        <span class="m-item">YOUNG. RICH. FREE.</span><span class="m-star">★</span>
-        <span class="m-item">LA VELETA</span><span class="m-star">★</span>
-        <span class="m-item">CLOUD RAP SUMMER</span><span class="m-star">★</span>
-        <!-- duplicate for seamless loop -->
-        <span class="m-item">TULUM</span><span class="m-star">★</span>
-        <span class="m-item">SOLO TRAVELER</span><span class="m-star">★</span>
-        <span class="m-item">JUNE 2026</span><span class="m-star">★</span>
-        <span class="m-item">21ST BIRTHDAY</span><span class="m-star">★</span>
-        <span class="m-item">PAPAYA PLAYA PROJECT</span><span class="m-star">★</span>
-        <span class="m-item">CENOTE RUN</span><span class="m-star">★</span>
-        <span class="m-item">PANORAMIC TULUM</span><span class="m-star">★</span>
-        <span class="m-item">RENTAL CAR</span><span class="m-star">★</span>
-        <span class="m-item">YOUNG. RICH. FREE.</span><span class="m-star">★</span>
-        <span class="m-item">LA VELETA</span><span class="m-star">★</span>
-        <span class="m-item">CLOUD RAP SUMMER</span><span class="m-star">★</span>
-    </div>
-</div>
-
-<!-- ══════════════════════════════
-     SETLIST / TRACKLIST
-══════════════════════════════ -->
-<section class="setlist" id="setlist">
-    <div class="eyebrow">— the itinerary —</div>
-    <div class="setlist__head">
-        <h1 class="setlist__title">SETLIST</h1>
-        <span class="setlist__sub">tulum, mexico &nbsp;·&nbsp; solo run &nbsp;·&nbsp; summer '26</span>
+    <!-- MARQUEE -->
+    <div class="marquee-wrap" aria-hidden="true">
+        <div class="marquee-track">
+            <span class="m-item">TULUM</span><span class="m-star">★</span>
+            <span class="m-item">SOLO TRAVELER</span><span class="m-star">★</span>
+            <span class="m-item">JUNE 2026</span><span class="m-star">★</span>
+            <span class="m-item">21ST BIRTHDAY</span><span class="m-star">★</span>
+            <span class="m-item">PAPAYA PLAYA PROJECT</span><span class="m-star">★</span>
+            <span class="m-item">CENOTE RUN</span><span class="m-star">★</span>
+            <span class="m-item">PANORAMIC TULUM</span><span class="m-star">★</span>
+            <span class="m-item">RENTAL CAR</span><span class="m-star">★</span>
+            <span class="m-item">YOUNG. RICH. FREE.</span><span class="m-star">★</span>
+            <span class="m-item">CLOUD RAP SUMMER</span><span class="m-star">★</span>
+            <!-- duplicate -->
+            <span class="m-item">TULUM</span><span class="m-star">★</span>
+            <span class="m-item">SOLO TRAVELER</span><span class="m-star">★</span>
+            <span class="m-item">JUNE 2026</span><span class="m-star">★</span>
+            <span class="m-item">21ST BIRTHDAY</span><span class="m-star">★</span>
+            <span class="m-item">PAPAYA PLAYA PROJECT</span><span class="m-star">★</span>
+            <span class="m-item">CENOTE RUN</span><span class="m-star">★</span>
+            <span class="m-item">PANORAMIC TULUM</span><span class="m-star">★</span>
+            <span class="m-item">RENTAL CAR</span><span class="m-star">★</span>
+            <span class="m-item">YOUNG. RICH. FREE.</span><span class="m-star">★</span>
+            <span class="m-item">CLOUD RAP SUMMER</span><span class="m-star">★</span>
+        </div>
     </div>
 
-    <div class="track" id="track-01">
-        <div class="track__n">01</div>
-        <div>
-            <div class="track__title">TOUCHDOWN IN PARADISE</div>
-            <div class="track__detail">CUN · late night arrival · private transfer · check in · first breath of tulum air</div>
-        </div>
-        <div class="track__badge">MAY 30</div>
-    </div>
+    <!-- SETLIST — glass card -->
+    <section class="setlist-wrap" id="setlist">
+        <div class="setlist-panel glass">
+            <div class="eyebrow">— the itinerary —</div>
+            <div class="setlist__head">
+                <h1 class="setlist__title">SETLIST</h1>
+                <span class="setlist__sub">tulum, mexico &nbsp;·&nbsp; solo run &nbsp;·&nbsp; summer '26</span>
+            </div>
 
-    <div class="track" id="track-02">
-        <div class="track__n">02</div>
-        <div>
-            <div class="track__title">FIRST SUNRISE</div>
-            <div class="track__detail">explore la veleta · cenote swim · street tacos · golden hour beach walk</div>
-        </div>
-        <div class="track__badge">MAY 31</div>
-    </div>
+            <div class="track" id="track-01">
+                <div class="track__n">01</div>
+                <div>
+                    <div class="track__title">TOUCHDOWN IN PARADISE</div>
+                    <div class="track__detail">CUN · late night arrival · private transfer · check in · first breath of tulum air</div>
+                </div>
+                <div class="track__badge">MAY 30</div>
+            </div>
 
-    <div class="track track--hot" id="track-03">
-        <div class="track__n"><span class="track__star">★</span></div>
-        <div>
-            <div class="track__title">THE BIRTHDAY &mdash; JUNE 1st</div>
-            <div class="track__detail">papaya playa project · all night · 21 candles · project x mode fully activated</div>
-        </div>
-        <div class="track__badge track__badge--hot">JUNE 1 &nbsp;·&nbsp; 21</div>
-    </div>
+            <div class="track" id="track-02">
+                <div class="track__n">02</div>
+                <div>
+                    <div class="track__title">FIRST SUNRISE</div>
+                    <div class="track__detail">explore la veleta · cenote swim · street tacos · golden hour beach walk</div>
+                </div>
+                <div class="track__badge">MAY 31</div>
+            </div>
 
-    <div class="track" id="track-04">
-        <div class="track__n">04</div>
-        <div>
-            <div class="track__title">RECUPERATION TOUR</div>
-            <div class="track__detail">rooftop pool session · slow morning · work from the villa · local eats · reset</div>
-        </div>
-        <div class="track__badge">JUNE 2</div>
-    </div>
+            <div class="track track--hot" id="track-03">
+                <div class="track__n"><span class="track__star">★</span></div>
+                <div>
+                    <div class="track__title">THE BIRTHDAY &mdash; JUNE 1st</div>
+                    <div class="track__detail">papaya playa project · all night · 21 candles · project x mode fully activated</div>
+                </div>
+                <div class="track__badge track__badge--hot">JUNE 1 &nbsp;·&nbsp; 21</div>
+            </div>
 
-    <div class="track" id="track-05">
-        <div class="track__n">05</div>
-        <div>
-            <div class="track__title">BACK ROADS &amp; OCEAN ROADS</div>
-            <div class="track__detail">rental car out · cobá ruins or beach drive · jungle roads · golden hour chase</div>
-        </div>
-        <div class="track__badge">JUNE 3</div>
-    </div>
+            <div class="track" id="track-04">
+                <div class="track__n">04</div>
+                <div>
+                    <div class="track__title">RECUPERATION TOUR</div>
+                    <div class="track__detail">rooftop pool session · slow morning · work from the villa · local eats · reset</div>
+                </div>
+                <div class="track__badge">JUNE 2</div>
+            </div>
 
-    <div class="track" id="track-06">
-        <div class="track__n">06</div>
-        <div>
-            <div class="track__title">LAST NIGHT IN MEXICO</div>
-            <div class="track__detail">final dinner out · beach walk · one more swim · pack up · make it count</div>
-        </div>
-        <div class="track__badge">JUNE 4</div>
-    </div>
+            <div class="track" id="track-05">
+                <div class="track__n">05</div>
+                <div>
+                    <div class="track__title">BACK ROADS &amp; OCEAN ROADS</div>
+                    <div class="track__detail">rental car out · cobá ruins or beach drive · jungle roads · golden hour chase</div>
+                </div>
+                <div class="track__badge">JUNE 3</div>
+            </div>
 
-    <div class="track" id="track-07">
-        <div class="track__n">07</div>
-        <div>
-            <div class="track__title">THE RETURN</div>
-            <div class="track__detail">4:30 AM out the door · CUN departure · back to reality · different man</div>
-        </div>
-        <div class="track__badge">JUNE 5</div>
-    </div>
-</section>
+            <div class="track" id="track-06">
+                <div class="track__n">06</div>
+                <div>
+                    <div class="track__title">LAST NIGHT IN MEXICO</div>
+                    <div class="track__detail">final dinner out · beach walk · one more swim · pack up · make it count</div>
+                </div>
+                <div class="track__badge">JUNE 4</div>
+            </div>
 
-<!-- ══════════════════════════════
-     SCATTER COLLAGE
-══════════════════════════════ -->
-<section class="collage-section" id="gallery">
-    <div class="collage-head">
-        <div class="eyebrow">— the gallery —</div>
-        <div class="ghost-title">THE<br>LIFE</div>
-    </div>
+            <div class="track" id="track-07">
+                <div class="track__n">07</div>
+                <div>
+                    <div class="track__title">THE RETURN</div>
+                    <div class="track__detail">4:30 AM out the door · CUN departure · back to reality · different man</div>
+                </div>
+                <div class="track__badge">JUNE 5</div>
+            </div>
+        </div>
+    </section>
 
-    <div class="scatter">
-        <div class="sp sp1" data-label="Beach Sunset">
-            <img src="IMG_1934.jpg" alt="side profile at beach sunset">
+    <!-- STATS — glass card -->
+    <section class="stats-wrap" id="stats">
+        <div class="stats-panel glass">
+            <div class="stats-inner">
+                <div class="stat">
+                    <div class="stat__n">7</div>
+                    <div class="stat__l">Nights</div>
+                </div>
+                <div class="stat">
+                    <div class="stat__n">01</div>
+                    <div class="stat__l">Solo</div>
+                </div>
+                <div class="stat">
+                    <div class="stat__n">21</div>
+                    <div class="stat__l">Candles</div>
+                </div>
+                <div class="stat">
+                    <div class="stat__n">∞</div>
+                    <div class="stat__l">Memories</div>
+                </div>
+            </div>
         </div>
-        <div class="sp sp2" data-label="Street Style">
-            <img src="IMG_3419.jpg" alt="flea market portrait">
-        </div>
-        <div class="sp sp3" data-label="Vision">
-            <img src="IMG_1161.jpg" alt="cash on laptop — vision">
-        </div>
-        <div class="sp sp4" data-label="The Fleet">
-            <img src="IMG_3555.jpg" alt="Rolls Royce Ferrari S63 lineup">
-        </div>
-        <div class="sp sp5" data-label="Levels">
-            <img src="IMG_2819.jpg" alt="Chanel mirror selfie">
-        </div>
-        <div class="sp sp6" data-label="Golden Hour">
-            <img src="IMG_1920.jpg" alt="beach sunset standing">
-        </div>
-        <div class="sp sp7" data-label="The Silhouette">
-            <img src="IMG_1904.jpg" alt="silhouette arms raised beach">
-        </div>
-        <div class="sp sp8" data-label="The AMG">
-            <img src="IMG_2956.jpg" alt="S63 AMG silver">
-        </div>
-    </div>
-</section>
+    </section>
 
-<!-- ══════════════════════════════
-     HORIZONTAL FILM STRIP
-══════════════════════════════ -->
-<section class="strip-section">
-    <div class="strip-head">
-        <div class="eyebrow">— scroll to explore &nbsp;→ —</div>
-    </div>
-    <div class="strip-scroll" id="stripScroll">
-        <div class="strip-item"><img src="IMG_1904.jpg" alt="silhouette"></div>
-        <div class="strip-item"><img src="IMG_1920.jpg" alt="beach sunset"></div>
-        <div class="strip-item"><img src="IMG_1934.jpg" alt="sunset profile"></div>
-        <div class="strip-item"><img src="IMG_3419.jpg" alt="market portrait"></div>
-        <div class="strip-item"><img src="IMG_1161.jpg" alt="cash on laptop"></div>
-        <div class="strip-item"><img src="IMG_3555.jpg" alt="luxury fleet"></div>
-        <div class="strip-item"><img src="IMG_2956.jpg" alt="S63 AMG"></div>
-        <div class="strip-item"><img src="IMG_2819.jpg" alt="mirror selfie"></div>
-    </div>
-</section>
+    <!-- FOOTER — transparent over collage -->
+    <footer>
+        <div class="footer__ghost">HAPPY 21ST</div>
+        <div class="footer__sig">june 1st, 2026 &nbsp;·&nbsp; tulum, mexico &nbsp;·&nbsp; @onnleon</div>
+    </footer>
 
-<!-- ══════════════════════════════
-     STATS
-══════════════════════════════ -->
-<section class="stats-section">
-    <div class="eyebrow">— by the numbers —</div>
-    <div class="stats-grid">
-        <div class="stat">
-            <div class="stat__n">7</div>
-            <div class="stat__l">Nights</div>
-        </div>
-        <div class="stat">
-            <div class="stat__n">01</div>
-            <div class="stat__l">Solo</div>
-        </div>
-        <div class="stat">
-            <div class="stat__n">21</div>
-            <div class="stat__l">Candles</div>
-        </div>
-        <div class="stat">
-            <div class="stat__n">∞</div>
-            <div class="stat__l">Memories</div>
-        </div>
-    </div>
-</section>
-
-<!-- ══════════════════════════════
-     FOOTER
-══════════════════════════════ -->
-<footer>
-    <div class="footer__ghost">HAPPY 21ST</div>
-    <div class="footer__sig">june 1st, 2026 &nbsp;·&nbsp; tulum, mexico &nbsp;·&nbsp; @onnleon</div>
-</footer>
+</div><!-- /.page -->
 
 <script>
-    // ── Parallax hero
-    const heroBg = document.getElementById('heroBg');
+    // Subtle parallax: shift collage photos on scroll
+    const bgs = document.querySelectorAll('.bc img');
     let ticking = false;
+
     window.addEventListener('scroll', () => {
         if (!ticking) {
             requestAnimationFrame(() => {
-                heroBg.style.transform = `translateY(${window.scrollY * 0.32}px)`;
+                const s = window.scrollY * 0.04; // very subtle
+                bgs.forEach((img, i) => {
+                    // alternating up/down drift per row for depth
+                    const dir = (Math.floor(i / 4) % 2 === 0) ? 1 : -1;
+                    img.style.transform = `scale(var(--zoom, 1.08)) translateY(${s * dir}%)`;
+                });
                 ticking = false;
             });
             ticking = true;
         }
     });
 
-    // ── Drag-scroll film strip
-    const strip = document.getElementById('stripScroll');
-    let isDown = false, startX, scrollLeft;
-    strip.addEventListener('mousedown', e => {
-        isDown = true;
-        strip.classList.add('active');
-        startX = e.pageX - strip.offsetLeft;
-        scrollLeft = strip.scrollLeft;
-    });
-    strip.addEventListener('mouseleave', () => { isDown = false; });
-    strip.addEventListener('mouseup',    () => { isDown = false; });
-    strip.addEventListener('mousemove', e => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x    = e.pageX - strip.offsetLeft;
-        const walk = (x - startX) * 1.6;
-        strip.scrollLeft = scrollLeft - walk;
-    });
-
-    // ── Subtle entrance animation
+    // Fade-in tracks on scroll
     const observer = new IntersectionObserver(entries => {
         entries.forEach(el => {
             if (el.isIntersecting) {
                 el.target.style.opacity = '1';
-                el.target.style.transform = el.target.style.transform
-                    ? el.target.style.transform.replace('translateY(20px)', '')
-                    : '';
+                el.target.style.transform = 'translateY(0)';
                 observer.unobserve(el.target);
             }
         });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.12 });
 
-    document.querySelectorAll('.track, .stat').forEach(el => {
+    document.querySelectorAll('.track, .stat').forEach((el, i) => {
         el.style.opacity = '0';
-        el.style.transition += ', opacity 0.5s ease';
+        el.style.transform = 'translateY(14px)';
+        el.style.transition = `opacity 0.5s ease ${i * 0.06}s, transform 0.5s ease ${i * 0.06}s`;
         observer.observe(el);
     });
 </script>
