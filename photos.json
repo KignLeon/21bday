@@ -1,0 +1,5 @@
+{
+  "note": "Add Tulum trip photos here by running ./update-photos.sh after uploading to Cloudinary",
+  "updated": "2026-05-28",
+  "trip_photos": []
+}

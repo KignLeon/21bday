@@ -474,6 +474,99 @@
         .strip-item.wide { width: 290px; }
 
         /* ═══════════════════════════════════════
+           PHOTO VAULT — crossfade grid
+        ═══════════════════════════════════════ */
+        .vault-wrap {
+            padding: 0 clamp(20px, 5vw, 60px) clamp(48px, 8vw, 90px);
+        }
+
+        .vault-panel {
+            max-width: 960px;
+            margin: 0 auto;
+            border-radius: 6px;
+            padding: clamp(24px, 4vw, 44px);
+        }
+
+        .vault-grid {
+            display: grid;
+            grid-template-areas:
+                "a b c"
+                "a d e"
+                "g f f";
+            grid-template-columns: 1.2fr 1fr 1fr;
+            grid-template-rows: 275px 195px 235px;
+            gap: 8px;
+            margin-top: 22px;
+        }
+
+        .vs-a { grid-area: a; }
+        .vs-b { grid-area: b; }
+        .vs-c { grid-area: c; }
+        .vs-d { grid-area: d; }
+        .vs-e { grid-area: e; }
+        .vs-f { grid-area: f; }
+        .vs-g { grid-area: g; }
+
+        .photo-slot {
+            position: relative;
+            overflow: hidden;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.03);
+            box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+        }
+
+        .slot-img {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+
+        .slot-img.active { opacity: 1; }
+
+        .slot-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: saturate(0.8) brightness(0.88);
+            transition: filter 2s ease, transform 8s ease;
+            transform: scale(1.03);
+        }
+
+        .slot-img.active img {
+            filter: saturate(1.02) brightness(1);
+            transform: scale(1);
+        }
+
+        .photo-slot:hover .slot-img.active img {
+            filter: saturate(1.1) brightness(1.05);
+        }
+
+        /* Slot counter dot */
+        .slot-dots {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+            z-index: 4;
+        }
+
+        .slot-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transition: background 0.4s ease, transform 0.4s ease;
+        }
+
+        .slot-dot.on {
+            background: var(--gold);
+            transform: scale(1.3);
+        }
+
+        /* ═══════════════════════════════════════
            STATS
         ═══════════════════════════════════════ */
         .stats-wrap {
@@ -1006,17 +1099,116 @@ Option B: Cruise the Tulum-Playa del Carmen highway — windows down.</span></di
                 <div class="strip-item tall"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000150/IMG_3453_u7afyi.jpg" alt=""></div>
                 <div class="strip-item tall"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000148/IMG_3484_tda2vp.jpg" alt=""></div>
                 <div class="strip-item wide"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000147/IMG_3525_tba9of.jpg" alt=""></div>
-                <div class="strip-item"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000138/IMG_3561_gjxkse.jpg" alt=""></div>
-                <div class="strip-item"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000138/IMG_3567_e56l5d.jpg" alt=""></div>
-                <div class="strip-item"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000138/IMG_3568_qsn0ha.png" alt=""></div>
-                <div class="strip-item"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000138/IMG_3569_ffcqbl.png" alt=""></div>
-                <div class="strip-item"><img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000138/IMG_3570_fcew8n.png" alt=""></div>
-                <!-- Generated assets -->
-                <div class="strip-item wide"><img src="hero.png" alt="tulum hero"></div>
-                <div class="strip-item wide"><img src="cenote.png" alt="cenote"></div>
-                <div class="strip-item wide"><img src="pool.png" alt="pool night"></div>
+                <!-- ★ TRIP PHOTOS — loaded dynamically from photos.json ★ -->
+                <!-- Run ./update-photos.sh after uploading new photos to Cloudinary -->
             </div>
         </div>
+    </section>
+
+    <!-- PHOTO VAULT — crossfade grid -->
+    <section class="vault-wrap" id="vault">
+        <div class="vault-panel glass">
+            <div class="eyebrow">— the vault —</div>
+
+            <div class="vault-grid">
+
+                <!-- A: tall portrait — beach/sunset series (5s) -->
+                <div class="photo-slot vs-a" data-dur="5000" data-count="3">
+                    <div class="slot-img active">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000167/IMG_1904_phhc65.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-img">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000164/IMG_1920_ovanqi.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-img">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000161/IMG_1934_tc60lr.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-dots"></div>
+                </div>
+
+                <!-- B: street style / portraits (7s) -->
+                <div class="photo-slot vs-b" data-dur="7000" data-count="3">
+                    <div class="slot-img active">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000142/IMG_3419_dnlson.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-img">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000169/IMG_1127_tjc1zz.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-img">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000170/IMG_1131_hujhkk.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-dots"></div>
+                </div>
+
+                <!-- C: fashion / luxury (6s) -->
+                <div class="photo-slot vs-c" data-dur="6000" data-count="3">
+                    <div class="slot-img active">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000156/IMG_2819_y2twvm.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-img">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000160/IMG_1797_ne2crh.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-img">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000161/IMG_1911_kpn1oq.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-dots"></div>
+                </div>
+
+                <!-- D: vision / grind (4s fast) -->
+                <div class="photo-slot vs-d" data-dur="4000" data-count="2">
+                    <div class="slot-img active">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000169/IMG_1161_b7wby9.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-img">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000152/IMG_2686_z84yvm.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-dots"></div>
+                </div>
+
+                <!-- E: lifestyle / scenery (9s) -->
+                <div class="photo-slot vs-e" data-dur="9000" data-count="3">
+                    <div class="slot-img active">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000143/IMG_3446_ml6i5y.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-img">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000150/IMG_3453_u7afyi.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-img">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000148/IMG_3484_tda2vp.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-dots"></div>
+                </div>
+
+                <!-- F: fleet / cars — wide (8s) -->
+                <div class="photo-slot vs-f" data-dur="8000" data-count="3">
+                    <div class="slot-img active">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000144/IMG_3555_yb86gh.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-img">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000159/IMG_2956_l7e2fk.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-img">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000147/IMG_3525_tba9of.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-dots"></div>
+                </div>
+
+                <!-- G: scenery/travel (5.5s) -->
+                <div class="photo-slot vs-g" data-dur="5500" data-count="3">
+                    <div class="slot-img active">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000151/IMG_3260_rx0xqz.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-img">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000150/IMG_3180_s1wtga.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-img">
+                        <img src="https://res.cloudinary.com/ddnhp0hzd/image/upload/f_auto,q_auto/v1780000150/IMG_3187_vueb0s.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="slot-dots"></div>
+                </div>
+
+            </div><!-- /.vault-grid -->
+        </div><!-- /.vault-panel -->
     </section>
 
     <!-- STATS -->
@@ -1056,15 +1248,11 @@ Option B: Cruise the Tulum-Playa del Carmen highway — windows down.</span></di
     function toggleDay(header) {
         const track = header.parentElement;
         const isOpen = track.classList.contains('open');
-
-        // Close all open tracks first
         document.querySelectorAll('.track.open').forEach(t => t.classList.remove('open'));
-
-        // Open clicked one if it was closed
         if (!isOpen) track.classList.add('open');
     }
 
-    // ── Background subtle parallax on scroll
+    // ── Background parallax
     const bgs = document.querySelectorAll('.bc img');
     let ticking = false;
     window.addEventListener('scroll', () => {
@@ -1085,20 +1273,70 @@ Option B: Cruise the Tulum-Playa del Carmen highway — windows down.</span></di
     const strip = document.getElementById('stripScroll');
     let isDown = false, startX, scrollLeft;
     strip.addEventListener('mousedown', e => {
-        isDown = true;
-        startX = e.pageX - strip.offsetLeft;
-        scrollLeft = strip.scrollLeft;
+        isDown = true; startX = e.pageX - strip.offsetLeft; scrollLeft = strip.scrollLeft;
     });
     strip.addEventListener('mouseleave', () => { isDown = false; });
     strip.addEventListener('mouseup', () => { isDown = false; });
     strip.addEventListener('mousemove', e => {
         if (!isDown) return;
         e.preventDefault();
-        const x = e.pageX - strip.offsetLeft;
-        strip.scrollLeft = scrollLeft - (x - startX) * 1.6;
+        strip.scrollLeft = scrollLeft - (e.pageX - strip.offsetLeft - startX) * 1.6;
     });
 
-    // ── Staggered fade-in on scroll
+    // ── Photo vault — crossfade cycling with dots
+    document.querySelectorAll('.photo-slot').forEach((slot, slotIdx) => {
+        const imgs   = slot.querySelectorAll('.slot-img');
+        const dotsEl = slot.querySelector('.slot-dots');
+        if (imgs.length < 2) return;
+
+        const dur = parseInt(slot.dataset.dur) || 5000;
+        let current = slotIdx % imgs.length;
+
+        // Build indicator dots
+        if (dotsEl) {
+            imgs.forEach((_, i) => {
+                const d = document.createElement('div');
+                d.className = 'slot-dot' + (i === current ? ' on' : '');
+                dotsEl.appendChild(d);
+            });
+        }
+
+        // Set initial active
+        imgs.forEach(img => img.classList.remove('active'));
+        imgs[current].classList.add('active');
+
+        // Stagger start so slots are never in sync
+        setTimeout(() => {
+            setInterval(() => {
+                const dots = dotsEl ? dotsEl.querySelectorAll('.slot-dot') : [];
+                if (dots[current]) dots[current].classList.remove('on');
+                imgs[current].classList.remove('active');
+                current = (current + 1) % imgs.length;
+                imgs[current].classList.add('active');
+                if (dots[current]) dots[current].classList.add('on');
+            }, dur);
+        }, slotIdx * 1100 + (Math.random() * 800 | 0));
+    });
+
+    // ── Load TRIP PHOTOS from photos.json → appends to scroll strip
+    // After your trip: upload photos to Cloudinary, run ./update-photos.sh
+    fetch('photos.json')
+        .then(r => r.json())
+        .then(data => {
+            if (!data.trip_photos || !data.trip_photos.length) return;
+            const s = document.getElementById('stripScroll');
+            const styles = ['tall','','wide','tall','','wide','tall','wide',''];
+            data.trip_photos.forEach((url, i) => {
+                const div = document.createElement('div');
+                div.className = 'strip-item ' + (styles[i % styles.length] || '');
+                div.innerHTML = `<img src="${url}" alt="tulum trip photo" loading="lazy">`;
+                s.appendChild(div);
+            });
+            console.log(`★ ${data.trip_photos.length} trip photos loaded from photos.json`);
+        })
+        .catch(() => {}); // silent — no photos.json yet is fine
+
+    // ── Staggered scroll fade-in
     const observer = new IntersectionObserver(entries => {
         entries.forEach(el => {
             if (el.isIntersecting) {
